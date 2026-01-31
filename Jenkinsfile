@@ -30,13 +30,13 @@ pipeline {
                 sh """
                 ${scannerHome}/bin/sonar-scanner \
                 -Dsonar.projectKey=todo-app \
-                -Dsonar.sources=. \
-                -Dsonar.login=$SONAR_AUTH_TOKEN
+                -Dsonar.sources=.
                 """
             }
         }
     }
 }
+
 
         stage('Quality Gate') {
             steps {
