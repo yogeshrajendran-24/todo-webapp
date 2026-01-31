@@ -23,19 +23,20 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            steps {
-                script {
-                    def scannerHome = tool 'sonar-scanner'
-                    withSonarQubeEnv('sonarqube') {
-                        sh """
-                        ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=todo-app \
-                        -Dsonar.sources=. 
-                        """
-                    }
-                }
+    steps {
+        script {
+            def scannerHome = tool 'sonar-scanner'
+            withSonarQubeEnv('sonarqube') {
+                sh """
+                ${scannerHome}/bin/sonar-scanner \
+                -Dsonar.projectKey=todo-app \
+                -Dsonar.sources=. \
+                -Dsonar.login=$SONAR_AUTH_TOKEN
+                """
             }
         }
+    }
+}
 
         stage('Quality Gate') {
             steps {
