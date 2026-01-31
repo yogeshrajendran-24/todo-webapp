@@ -59,15 +59,9 @@ pipeline {
         stage('Deploy') {
     steps {
         sh '''
-        echo "Stopping old container if it exists..."
-        docker stop todo-app || true
-        docker rm todo-app || true
-
-        echo "Deploying new container..."
-        docker run -d \
-          --name todo-app \
-          -p 8081:80 \
-          $DOCKER_IMAGE
+          docker stop todo-app || true
+          docker rm todo-app || true
+          docker run -d --name todo-app -p 80:80 $DOCKER_IMAGE
         '''
             }
         }
