@@ -1,13 +1,16 @@
-provider "aws" {
-  region = var.region
-}
-
-resource "aws_security_group" "app_sg" {
-  name = "todo-app-sg"
+resource "aws_security_group" "web_sg" {
+  name = "todo-webapp-sg"
 
   ingress {
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -20,26 +23,33 @@ resource "aws_security_group" "app_sg" {
   }
 
   ingress {
-    from_port   = 443
-    to_port     = 443
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
 resource "aws_instance" "app" {
-  ami           = "ami-08c40ec9ead489470"
-  instance_type = var.instance_type
-  key_name      = var.key_name
-
-  security_groups = [aws_security_group.app_sg.name]
+  ami                    = "ami-0f6a202861f7f12a8"
+  instance_type          = "t3.small"
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
+  key_name = "todo-key"
 
   user_data = <<-EOF
               #!/bin/bash
-              yum update -y
-              amazon-linux-extras install docker -y
-              service docker start
-              usermod -a -G docker ec2-user
+              apt update -y
+              apt install -y docker.io
+              systemctl start docker
+              systemctl enable docker
+              usermod -aG docker ubuntu
               EOF
 
   tags = {

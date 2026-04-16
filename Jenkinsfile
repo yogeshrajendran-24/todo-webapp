@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "yogeshrajendran/todo-webapp"
-        EC2_HOST = "ubuntu@54.235.169.85"
+        EC2_HOST = "ubuntu@98.94.151.180"
     }
     
        stages{
