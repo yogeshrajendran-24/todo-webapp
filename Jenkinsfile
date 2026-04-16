@@ -40,7 +40,7 @@ pipeline {
                        docker pull ${DOCKER_IMAGE}:latest &&
                         docker stop todo-webapp || true &&
                         docker rm todo-webapp || true &&
-                        docker run -d -p 80:80 --restart always --name todo-webapp ${DOCKER_IMAGE}:latest 
+                        docker run -d -p 8000:80 --restart always --name todo-webapp ${DOCKER_IMAGE}:latest 
                         "
                         """
                 }
