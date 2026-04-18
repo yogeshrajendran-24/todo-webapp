@@ -36,7 +36,7 @@ pipeline {
             steps {
                     sshagent(['ec2-user-key']) {
                     sh """
-                    scp -o StrictHostKeyChecking=no deployment.yaml service.yaml ingress.yaml ${EC2_HOST}:~
+                    scp -o StrictHostKeyChecking=no k8s/deployment.yaml k8s/service.yaml k8s/ingress.yaml ${EC2_HOST}:~
 
                         ssh -o StrictHostKeyChecking=no ${EC2_HOST} << EOF
                         kubectl apply -f k8s/deployment.yaml
