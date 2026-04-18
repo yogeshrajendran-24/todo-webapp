@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "yogeshrajendran/todo-webapp"
-        EC2_HOST = "ubuntu@98.94.151.180"
+        EC2_HOST = "ubuntu@3.86.152.35"
     }
     
        stages{
@@ -32,23 +32,19 @@ pipeline {
              }
         }
 
-        stage('Deploy to EC2'){
+        stage('Deploy to Kubernetes') {
             steps{
-                sshagent(['ec2-user-key']){
-                    sh """
-                    ssh -o StrictHostkeyChecking=no ${EC2_HOST} "
-                       docker pull ${DOCKER_IMAGE}:latest &&
-                        docker stop todo-webapp || true &&
-                        docker rm todo-webapp || true &&
-                        docker run -d -p 3000:80 --name todo-webapp ${DOCKER_IMAGE}:latest 
-                        "
-                        """
+                sshagent(['ec2-ssh-key']){
+                    ssh -o StrictHostkeyChecking=no ${EC2_HOST}sh '''
+                        kubectl apply -f deployment.yaml
+                        kubectl apply -f service.yaml
+                        kubectl apply -f ingress.yaml
+                    '''
                 }
-
             }
 
         }
-    }
+    
 
 
     post{
@@ -64,4 +60,5 @@ pipeline {
             sh 'echo "Build failed, Sending Notification...."'
         }
     }
+
 }
