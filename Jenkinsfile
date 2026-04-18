@@ -34,7 +34,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                    sshagent(['ec2-ssh-key']) {
+                    sshagent(['ec2-user-key']) {
                     sh """
                         ssh -o StrictHostKeyChecking=no ${EC2_HOST} << 'EOF'
                         kubectl apply -f deployment.yaml
