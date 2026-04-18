@@ -13,7 +13,7 @@ spec:
         app: todo-webapp
     spec:
       containers:
-      - name: todo
+      - name: todo-webapp
         image: yogeshrajendran/todo-app:latest
         ports:
         - containerPort: 80
