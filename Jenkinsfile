@@ -35,11 +35,13 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps{
                 sshagent(['ec2-ssh-key']){
-                    ssh -o StrictHostkeyChecking=no ${EC2_HOST}sh '''
+                    sh """
+                    ssh -o StrictHostkeyChecking=no ${EC2_HOST}"
                         kubectl apply -f deployment.yaml
                         kubectl apply -f service.yaml
                         kubectl apply -f ingress.yaml
-                    '''
+                        "
+                    """
                 }
             }
 
