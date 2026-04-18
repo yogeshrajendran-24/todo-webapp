@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: todo-app
+  name: todo-webapp
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: todo
+      app: todo-webapp
   template:
     metadata:
       labels:
-        app: todo
+        app: todo-webapp
     spec:
       containers:
       - name: todo
-        image: your-dockerhub-username/todo-app:latest
+        image: yogeshrajendran/todo-app:latest
         ports:
         - containerPort: 80
