@@ -39,9 +39,9 @@ pipeline {
                     scp -o StrictHostKeyChecking=no k8s/deployment.yaml k8s/service.yaml k8s/ingress.yaml ${EC2_HOST}:~
 
                         ssh -o StrictHostKeyChecking=no ${EC2_HOST} << EOF
-                        kubectl apply -f k8s/deployment.yaml
-                        kubectl apply -f k8s/service.yaml
-                        kubectl apply -f k8s/ingress.yaml
+                        kubectl apply -f deployment.yaml
+                        kubectl apply -f service.yaml
+                        kubectl apply -f ingress.yaml
                     EOF
                     """
                 }
